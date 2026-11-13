@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banco Horizonte</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">H</span>
+        <span>horizonte<small>BANCO DIGITAL</small></span>
+      </div>
+      <nav id="navigation">
+        <button class="nav-link active" data-page="dashboard">▦ <span>Dashboard</span></button>
+        <button class="nav-link" data-page="accounts">▤ <span>Contas</span></button>
+        <button class="nav-link" data-page="transactions">↔ <span>Movimentações</span></button>
+        <button class="nav-link" data-page="customers">♙ <span>Clientes</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="demo-note">AMBIENTE DE DEMONSTRAÇÃO<br><span>Dados salvos neste navegador</span></div>
+        <button class="nav-link" id="logoutBtn">⇥ <span>Sair / trocar perfil</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">BANCO HORIZONTE</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="user-area">
+          <div class="avatar" id="userAvatar">AD</div>
+          <div>
+            <strong id="userName">Administrador</strong>
+            <small id="userRole">Acesso administrativo</small>
+          </div>
+        </div>
+      </header>
+
+      <section id="loginScreen" class="login-screen hidden">
+        <div class="login-card">
+          <div class="brand login-brand">
+            <span class="brand-mark">H</span>
+            <span>horizonte<small>BANCO DIGITAL</small></span>
+          </div>
+          <h2>Acesse sua conta</h2>
+          <p class="muted">Escolha um perfil para entrar no ambiente de demonstração.</p>
+          <label>Perfil de acesso</label>
+          <select id="loginRole">
+            <option value="admin">Administrador</option>
+            <option value="client">Cliente</option>
+          </select>
+          <div id="clientLoginWrap" class="hidden">
+            <label>Número da conta</label>
+            <input id="loginAccount" placeholder="Ex.: 1001">
+          </div>
+          <button class="primary full" id="loginBtn">Entrar no sistema</button>
+          <p class="hint">Demonstração: administrador entra sem senha. Para cliente, abra uma conta primeiro.</p>
+        </div>
+      </section>
+
+      <section id="dashboardPage" class="page">
+        <div class="welcome-row">
+          <div>
+            <h2>Visão geral</h2>
+            <p class="muted">Resumo da operação bancária.</p>
+          </div>
+          <button class="primary" id="quickOpen">＋ Abrir conta</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-label">Saldo total em contas</span>
+            <strong id="totalBalance">R$ 0,00</strong>
+            <span class="stat-foot">Soma dos saldos ativos</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Contas abertas</span>
+            <strong id="openCount">0</strong>
+            <span class="stat-foot">Clientes ativos</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Movimentações</span>
+            <strong id="transactionCount">0</strong>
+            <span class="stat-foot">Operações registradas</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Contas encerradas</span>
+            <strong id="closedCount">0</strong>
+            <span class="stat-foot">Histórico preservado</span>
+          </article>
+        </div>
+        <div class="content-card">
+          <div class="card-heading">
+            <div>
+              <h3>Movimentações recentes</h3>
+              <p class="muted">Últimas operações realizadas no sistema</p>
+            </div>
+            <button class="text-button" data-goto="transactions">Ver todas →</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Operação</th><th>Cliente</th><th>Conta</th><th>Data</th><th>Valor</th></tr>
+              </thead>
+              <tbody id="recentTransactions"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="accountsPage" class="page hidden">
+        <div class="welcome-row">
+          <div>
+            <h2>Contas bancárias</h2>
+            <p class="muted">Abra, consulte e encerre contas.</p>
+          </div>
+          <button class="primary admin-only" id="newAccountBtn">＋ Nova conta</button>
+        </div>
+        <div class="toolbar">
+          <input id="accountSearch" placeholder="Buscar por nome ou número da conta...">
+          <select id="accountFilter">
+            <option value="all">Todas as contas</option>
+            <option value="open">Abertas</option>
+            <option value="closed">Encerradas</option>
+          </select>
+        </div>
+        <div class="content-card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Cliente</th><th>Conta</th><th>CPF</th><th>Saldo</th><th>Status</th><th>Ações</th></tr>
+              </thead>
+              <tbody id="accountsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="transactionsPage" class="page hidden">
+        <div class="welcome-row">
+          <div>
+            <h2>Movimentações</h2>
+            <p class="muted">Depósitos, saques e histórico de operações.</p>
+          </div>
+        </div>
+        <div class="action-grid">
+          <div class="content-card action-card">
+            <div class="action-icon deposit">＋</div>
+            <h3>Depositar</h3>
+            <p class="muted">Adicionar valor ao saldo de uma conta.</p>
+            <button class="primary full" data-operation="deposit">Fazer depósito</button>
+          </div>
+          <div class="content-card action-card">
+            <div class="action-icon withdraw">−</div>
+            <h3>Sacar</h3>
+            <p class="muted">Retirar valor do saldo disponível.</p>
+            <button class="secondary full" data-operation="withdraw">Fazer saque</button>
+          </div>
+        </div>
+        <div class="content-card">
+          <div class="card-heading">
+            <div>
+              <h3>Extrato completo</h3>
+              <p class="muted">Histórico de entradas e saídas</p>
+            </div>
+            <input id="transactionSearch" class="compact-input" placeholder="Filtrar conta...">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Tipo</th><th>Cliente</th><th>Conta</th><th>Data e hora</th><th>Valor</th></tr>
+              </thead>
+              <tbody id="transactionsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="customersPage" class="page hidden">
+        <div class="welcome-row">
+          <div>
+            <h2>Clientes</h2>
+            <p class="muted">Cadastro e relacionamento com clientes.</p>
+          </div>
+          <button class="primary admin-only" id="customerOpenBtn">＋ Cadastrar cliente</button>
+        </div>
+        <div id="customerCards" class="customer-grid"></div>
+      </section>
+
+      <section id="clientPage" class="page hidden">
+        <div class="welcome-row">
+          <div>
+            <h2>Minha conta</h2>
+            <p class="muted">Bem-vindo ao Banco Horizonte.</p>
+          </div>
+          <span class="status-pill active">Conta ativa</span>
+        </div>
+        <div class="client-balance">
+          <div>
+            <span>Saldo disponível</span>
+            <strong id="clientBalance">R$ 0,00</strong>
+            <small id="clientAccountNumber">Conta nº —</small>
+          </div>
+          <div class="client-balance-mark">H</div>
+        </div>
+        <div class="action-grid client-actions">
+          <div class="content-card action-card">
+            <div class="action-icon deposit">＋</div>
+            <h3>Depositar</h3>
+            <p class="muted">Adicionar dinheiro à conta.</p>
+            <button class="primary full" data-operation="deposit">Depositar</button>
+          </div>
+          <div class="content-card action-card">
+            <div class="action-icon withdraw">−</div>
+            <h3>Sacar</h3>
+            <p class="muted">Retirar dinheiro da conta.</p>
+            <button class="secondary full" data-operation="withdraw">Sacar</button>
+          </div>
+          <div class="content-card action-card">
+            <div class="action-icon">▤</div>
+            <h3>Meu cartão</h3>
+            <p class="muted">Visualize e imprima seu cartão.</p>
+            <button class="secondary full" id="showMyCard">Ver cartão</button>
+          </div>
+        </div>
+        <div class="content-card">
+          <div class="card-heading">
+            <div>
+              <h3>Meu extrato</h3>
+              <p class="muted">Suas movimentações recentes</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Tipo</th><th>Data e hora</th><th>Valor</th></tr></thead>
+              <tbody id="clientTransactions"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">BANCO HORIZONTE</p>
+          <h2 id="modalTitle">Nova operação</h2>
+        </div>
+        <button class="close-btn" id="closeModal">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
